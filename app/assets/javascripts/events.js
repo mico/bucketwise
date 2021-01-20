@@ -232,11 +232,30 @@ var Events = {
     Events.updateUnassignedFor('transfer_to');
   },
 
+  computePercentsForLineItems: function(sourceAmount, section) {
+    var line_items = $(section + ".line_items");
+    line_items.select("input[type=text][class=percent]").each(function(field) {
+      if (field.value !== '' && field.value > 0) {
+        field.adjacent("[class=number]")[0].value = field.value * (sourceAmount / 10000);
+      }
+    });
+  },
+
+  updatePercentsLineItems: function(sourceAmount, section) {
+    if (sourceAmount === 0) return;
+    var line_items = $(section + ".line_items");
+    line_items.select("input[type=text][class=number]").each(function(field) {
+      if (field.value !== '' && field.value > 0) {
+        field.adjacent("[class=percent]")[0].value = Money.parse(field) / (sourceAmount / 100)
+      }
+    });
+  },
+
   computeTotalForLineItems: function(section) {
     var total = 0;
 
     var line_items = $(section + ".line_items");
-    line_items.select("input[type=text]").each(function(field) {
+    line_items.select("input[type=text][class=number]").each(function(field) {
       total += Money.parse(field);
     });
 
@@ -245,8 +264,16 @@ var Events = {
 
   computeUnassignedFor: function(section) {
     var total = Money.parse('expense_total');
+    Events.updatePercentsLineItems(total, section);
     var unassigned = total - Events.computeTotalForLineItems(section);
     return { 'total': total, 'unassigned': unassigned };
+  },
+
+  updatePercentsFor: function(section) {
+    if(!$(section)) return;
+    var total = Money.parse('expense_total');
+    Events.computePercentsForLineItems(total, section);
+    Events.updateUnassignedFor(section);
   },
 
   updateUnassignedFor: function(section) {
