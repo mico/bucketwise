@@ -112,8 +112,16 @@ module EventsHelper
   end
 
   def line_item_amount_value(item)
-    if item && item.amount
+    if item&.amount
       "%.2f" % (item.amount.abs / 100.0)
+    else
+      ""
+    end
+  end
+
+  def line_item_percent_value(item)
+    if item&.amount
+      "%d" % (item.amount.abs / (item.event.balance.abs / 100))
     else
       ""
     end
