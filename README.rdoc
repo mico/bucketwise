@@ -21,7 +21,7 @@ Things it intentionally does *not* do:
 
 == REQUIREMENTS:
 
-Essentially, all you need is Ruby, Rake, and version 2.3 of the Ruby on Rails framework. To run locally, it is recommended you also have sqlite3 installed, as well as the sqlite3-ruby bindings. It's also easiest if you have Capistrano 2.5.x installed.
+The project was recently updated to rails 6 and ruby 3.0. And migrated to PostgreSQL.
 
 == INSTALL:
 
@@ -41,6 +41,8 @@ To get started quickly, you can just run it locally. Setting that up goes someth
 * "script/server", and then go to http://localhost:3000/ to log in and get started!
 
 If you want to use Capistrano to deploy BucketWise to a server of your own, you can simply create a file at ~/.bucketwise/Capfile, which should contain your custom deployment instructions. If that file exists, BucketWise's own config/deploy.rb will load it automatically.
+
+To deploy to Heroku simply push to Heroku repository or point to GitHub repository.
 
 == LICENSE:
 
